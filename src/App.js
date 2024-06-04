@@ -1,24 +1,30 @@
-import logo from './logo.svg';
-import './App.css';
+import React from 'react';
+import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
+import Dashboard from './components/dashboard';
+import Query from './components/query';
+import { CssBaseline } from '@mui/material';
+import Header from './components/header';
+import Footer from './components/footer';
+// import FundTrendChart from './components/FundTrendChart';
+// import FundAnalysis from './components/FundAnalysis';
 
+//alpha vantage key: BLNLMLH5L5Z25HT7
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <Router>
+      <CssBaseline />
+      <Header />
+      <div className="App">
+        <Routes>
+          {/* <Route path="/" exact component={Dashboard} />
+          <Route path="/chart" component={FundChart} />
+          <Route path="/analysis" component={Analysis} /> */}
+          <Route path="/query" element={<Query />} />
+          <Route path="/" element={<Dashboard />} />
+        </Routes>
+      </div>
+      <Footer />
+    </Router>
   );
 }
 

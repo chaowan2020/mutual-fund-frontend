@@ -1,6 +1,34 @@
-# Getting Started with Create React App
+# Mutual Fund Frontend
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+This repository contains the frontend code for the Mutual Fund Dashboard and Analysis project. Built with ReactJS, it includes components for displaying fund trend charts, dashboards, and analysis features. The frontend interacts with the backend to fetch data and provides a user-friendly interface for querying mutual fund information.
+
+## Prerequisites
+
+- Node.js and npm installed. You can download them from [Node.js](https://nodejs.org/).
+
+## Getting Started
+
+1. **Clone the repository:**
+   ```bash
+   git clone https://github.com/your-username/mutual-fund-frontend.git
+   cd mutual-fund-frontend
+2. **Install dependencies:**
+   ```bash
+   npm install
+3. **Start the development server:**
+   ```bash
+   npm start
+**The application will run on http://localhost:3000.**  
+
+## Project Structure
+* src/components: Contains React components for the dashboard, fund chart, analysis, and query.
+* src/services: Contains API service for making HTTP requests to the backend.
+
+## API Integration
+The frontend communicates with the backend to fetch mutual fund data and handle user queries using the following API endpoints:
+
+* GET /api/mutual-funds: Fetch mutual fund data.
+* POST /api/genai/ask: Ask a question to the GenAI model.
 
 ## Available Scripts
 
@@ -68,3 +96,6 @@ This section has moved here: [https://facebook.github.io/create-react-app/docs/d
 ### `npm run build` fails to minify
 
 This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+
+## License
+This project is licensed under the MIT License - see the LICENSE file for details.
