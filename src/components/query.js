@@ -6,8 +6,8 @@ function Query() {
   const [answer, setAnswer] = useState('');
 
   const handleAsk = async () => {
-    // const response = await apiService.askGenAI(question);
-    const response = await apiService.getMutualFunds(question);
+    const response = await apiService.askGenAI(question);
+    // const response = await apiService.getMutualFunds(question);
     console.log(response, 10000, response?.code)
     if(response?.code === 'ERR_BAD_RESPONSE') {
         setAnswer(response?.response?.data?.error);
