@@ -1,97 +1,95 @@
-import React, { useEffect, useState, useRef, useContext } from 'react';
-import { useParams } from 'react-router-dom';
-import { Container, Typography, Grid, Box, Tabs, Tab } from '@mui/material';
+import React, { useState, useContext, useEffect, useRef } from 'react';
+import { Container, Typography, Tabs, Tab, Box, Grid } from '@mui/material';
 import { createChart } from 'lightweight-charts';
 import apiService from '../services/apiService';
 import { FundContext } from '../contexts/FundContext';
+import Query from './query';
+import Analysis from './analysis';
 
 const FundDetail = () => {
-    const { fundDetail, id } = useContext(FundContext);
-    const [analysis, setAnalysis] = useState(null);
-    const [tabIndex, setTabIndex] = useState(0);
-    const areaChartContainerRef = useRef();
-    const candlestickChartContainerRef = useRef();
-    const histogramContainerRef = useRef();
-    const areaSeriesRef = useRef();
-    const candlestickSeriesRef = useRef();
-    const histogramSeriesRef = useRef();
-    useEffect(() => {
-        if (fundDetail && fundDetail.length) {
-            const sortedData = [...fundDetail].sort((a, b) => new Date(a.time) - new Date(b.time));
-            const data = sortedData.map(item => ({
-                time: item.time,
-                value: parseFloat(item.close),
-                open: parseFloat(item.open),
-                high: parseFloat(item.high),
-                low: parseFloat(item.low),
-                close: parseFloat(item.close)
-            }));
-            if (!histogramSeriesRef.current) {
-                const hist = createChart(histogramContainerRef.current, { width: 400, height: 300 });
-                histogramSeriesRef.current = hist.addHistogramSeries();
-            }
-            histogramSeriesRef.current.setData(data.map(({ time, value }) => ({ time, value })));
+  const { fundDetail, id, setOverview, overview } = useContext(FundContext);
+  const [tabIndex, setTabIndex] = useState(0);
+  const candlestickChartContainerRef = useRef();
+  const histogramContainerRef = useRef();
+  const areaChartContainerRef = useRef();
+  const candlestickSeriesRef = useRef();
+  const histogramSeriesRef = useRef();
+  const areaSeriesRef = useRef();
 
-            if (!areaSeriesRef.current) {
-                const areaChart = createChart(areaChartContainerRef.current, { width: 400, height: 300 });
-                areaSeriesRef.current = areaChart.addAreaSeries();
-            }
-            areaSeriesRef.current.setData(data.map(({ time, value }) => ({ time, value })));
+  useEffect(() => {
+    if (fundDetail && fundDetail.length) {
+      const sortedData = [...fundDetail].sort((a, b) => new Date(a.time) - new Date(b.time));
+      const data = sortedData.map(item => ({
+        time: item.time,
+        value: parseFloat(item.close),
+        open: parseFloat(item.open),
+        high: parseFloat(item.high),
+        low: parseFloat(item.low),
+        close: parseFloat(item.close)
+      }));
 
-            if (!candlestickSeriesRef.current) {
-                const candlestickChart = createChart(candlestickChartContainerRef.current, { width: 400, height: 300 });
-                candlestickSeriesRef.current = candlestickChart.addCandlestickSeries();
-            }
-            candlestickSeriesRef.current.setData(data.map(({ time, open, high, low, close }) => ({ time, open, high, low, close })));
-        }
-    }, [fundDetail, fundDetail.length]);
+      if (!candlestickSeriesRef.current) {
+        const candlestickChart = createChart(candlestickChartContainerRef.current, { width: candlestickChartContainerRef.current.clientWidth, height: 430 });
+        candlestickSeriesRef.current = candlestickChart.addCandlestickSeries();
+      }
+      candlestickSeriesRef.current.setData(data.map(({ time, open, high, low, close }) => ({ time, open, high, low, close })));
 
-    useEffect(() => {
-        if (tabIndex === 1 && !analysis) {
-            apiService.getFundAnalysis(id)
-                .then(response => setAnalysis(response.data))
-                .catch(error => console.error('Error fetching analysis:', error));
-        }
-    }, [id, tabIndex, analysis]);
+      if (!histogramSeriesRef.current) {
+        const histogramChart = createChart(histogramContainerRef.current, { width: histogramContainerRef.current.clientWidth, height: 220 });
+        histogramSeriesRef.current = histogramChart.addHistogramSeries();
+      }
+      histogramSeriesRef.current.setData(data.map(({ time, value }) => ({ time, value })));
 
-    const handleChange = (event, newValue) => {
-        setTabIndex(newValue);
-    };
+      if (!areaSeriesRef.current) {
+        const areaChart = createChart(areaChartContainerRef.current, { width: areaChartContainerRef.current.clientWidth, height: 220 });
+        areaSeriesRef.current = areaChart.addAreaSeries();
+      }
+      areaSeriesRef.current.setData(data.map(({ time, value }) => ({ time, value })));
+    }
+  }, [fundDetail]);
 
-    return (
-        <Container>
-            <Typography variant="h4" gutterBottom>{id} Fund Detail</Typography>
-            <Tabs value={tabIndex} onChange={handleChange}>
-                <Tab label="Charts" />
-                <Tab label="Analysis" />
-            </Tabs>
-            {tabIndex === 0 && (
-                <Box>
-                    <div ref={histogramContainerRef}></div>
-                    <div ref={areaChartContainerRef}></div>
-                    <div ref={candlestickChartContainerRef}></div>
-                </Box>
-            )}
-            {tabIndex === 1 && (
-                !analysis ? <Typography>Loading...</Typography> : (
-                    <Grid container spacing={3}>
-                        <Grid item xs={12}>
-                            <Typography variant="h6">Historical Performance</Typography>
-                            <Typography variant="body2">{analysis.performance}</Typography>
-                        </Grid>
-                        <Grid item xs={12}>
-                            <Typography variant="h6">Risk Analysis</Typography>
-                            <Typography variant="body2">{analysis.risk}</Typography>
-                        </Grid>
-                        <Grid item xs={12}>
-                            <Typography variant="h6">Comparison</Typography>
-                            <Typography variant="body2">{analysis.comparison}</Typography>
-                        </Grid>
-                    </Grid>
-                )
-            )}
-        </Container>
-    );
+  useEffect(() => {
+    if (tabIndex === 1 && !overview) {
+      apiService.getFundAnalysis(id)
+        .then(response => setOverview(response.data))
+        .catch(error => console.error('Error fetching analysis:', error));
+    }
+  }, [id, tabIndex, overview]);
+
+  const handleChange = (event, newValue) => {
+    setTabIndex(newValue);
+  };
+
+  return (
+    <Container>
+      <Typography variant="h4" gutterBottom>{id} Fund Detail</Typography>
+      <Query />
+      <Tabs value={tabIndex} onChange={handleChange}>
+        <Tab label="Charts" />
+        <Tab label="Analysis" />
+      </Tabs>
+      {tabIndex === 0 && (
+        <Box sx={{ mt: 3 }}>
+          <Box sx={{ mb: 4 }}>
+            <div ref={candlestickChartContainerRef} style={{ width: '100%', height: '400px' }}></div>
+          </Box>
+          <Grid container spacing={3}>
+            <Grid item xs={12} md={6}>
+              <div ref={histogramContainerRef} style={{ width: '100%', height: '200px' }}></div>
+            </Grid>
+            <Grid item xs={12} md={6}>
+              <div ref={areaChartContainerRef} style={{ width: '100%', height: '200px' }}></div>
+            </Grid>
+          </Grid>
+        </Box>
+      )}
+      {tabIndex === 1 && (
+        !overview ? <Typography>Loading...</Typography> : (
+            <Analysis />
+        )
+      )}
+    </Container>
+  );
 };
 
 export default FundDetail;

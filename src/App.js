@@ -18,9 +18,7 @@ function App() {
         <Header />
         <div className="App">
           <Routes>
-            {/* <Route path="/" exact component={Dashboard} />
-            <Route path="/chart" component={FundChart} />
-            <Route path="/analysis" component={Analysis} /> */}
+            {/* <Route path="/analysis" component={Analysis} /> */}
             <Route path="/query" element={<Query />} />
             <Route path="/" element={<Dashboard />} />
             <Route path="/fund" element={<FundDetail />} />
