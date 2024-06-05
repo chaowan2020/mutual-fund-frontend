@@ -9,10 +9,10 @@ function Query() {
     const response = await apiService.askGenAI(question);
     // const response = await apiService.getMutualFunds(question);
     console.log(response, 10000, response?.code)
-    if(response?.code === 'ERR_BAD_RESPONSE') {
-        setAnswer(response?.response?.data?.error);
+    if (response?.code === 'ERR_BAD_RESPONSE') {
+      setAnswer(response?.response?.data?.error);
     } else {
-        setAnswer(response?.data?.answer);
+      setAnswer(response?.data?.answer);
     }
   };
 

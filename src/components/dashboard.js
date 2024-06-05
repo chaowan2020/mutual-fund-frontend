@@ -3,6 +3,7 @@ import { Container, Typography, Grid, TextField, Card, CardContent } from '@mui/
 import apiService from '../services/apiService';
 import { useNavigate } from 'react-router-dom';
 import { FundContext } from '../contexts/FundContext';
+import NewsComponent from './news';
 
 const fetchFundData = async (setFundDetail, id) => {
   const result = await apiService.getMutualFunds(id);
@@ -22,7 +23,7 @@ const Dashboard = () => {
   const [search, setSearch] = useState('');
   const { setFundDetail, setId } = useContext(FundContext);
   const navigate = useNavigate();
-  const filteredFunds = funds.filter(fund => 
+  const filteredFunds = funds.filter(fund =>
     fund.name.toLowerCase().includes(search.toLowerCase())
   );
 
@@ -35,15 +36,17 @@ const Dashboard = () => {
   return (
     <Container>
       <Typography variant="h4" gutterBottom>Mutual Fund Dashboard</Typography>
-      <TextField 
-        label="Search Funds" 
-        variant="outlined" 
-        fullWidth 
+      <TextField
+        label="Search Funds"
+        variant="outlined"
+        fullWidth
         margin="normal"
         value={search}
         onChange={e => setSearch(e.target.value)}
         onBlur={handleConfirm}
       />
+      <Typography variant="h5" gutterBottom>Latest Market News</Typography>
+      <NewsComponent />
       <Grid container spacing={3}>
         {filteredFunds.map(fund => (
           <Grid item xs={12} sm={6} md={4} key={fund.id}>

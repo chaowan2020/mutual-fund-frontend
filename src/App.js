@@ -5,7 +5,7 @@ import Query from './components/query';
 import { CssBaseline } from '@mui/material';
 import Header from './components/header';
 import Footer from './components/footer';
-import { FundProvider } from './contexts/FundContext'; 
+import { FundProvider } from './contexts/FundContext';
 import FundDetail from './components/fundDetails';
 // import FundAnalysis from './components/FundAnalysis';
 
