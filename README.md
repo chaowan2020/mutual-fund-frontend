@@ -1,6 +1,6 @@
 # Mutual Fund Frontend
 
-This repository contains the frontend code for the Mutual Fund Dashboard and Analysis project. Built with ReactJS, it includes components for displaying fund trend charts, dashboards, and analysis features. The frontend interacts with the backend to fetch data and provides a user-friendly interface for querying mutual fund information.
+This repository contains the frontend code for the Mutual Fund Dashboard and Analysis project. Built with ReactJS, it includes components for displaying fund trend charts, dashboards, and analysis features. The frontend is designed to leverage the power of GenAI, offering users an intuitive interface that transforms complex data into accessible insights. By interacting with the backend, it provides a sophisticated and user-friendly experience for querying and understanding mutual fund information.
 
 ## Prerequisites
 
