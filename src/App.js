@@ -7,9 +7,7 @@ import Header from './components/header';
 import Footer from './components/footer';
 import { FundProvider } from './contexts/FundContext';
 import FundDetail from './components/fundDetails';
-// import FundAnalysis from './components/FundAnalysis';
 
-//alpha vantage key: BLNLMLH5L5Z25HT7
 function App() {
   return (
     <FundProvider>
@@ -18,7 +16,6 @@ function App() {
         <Header />
         <div className="App">
           <Routes>
-            {/* <Route path="/analysis" component={Analysis} /> */}
             <Route path="/query" element={<Query />} />
             <Route path="/" element={<Dashboard />} />
             <Route path="/fund" element={<FundDetail />} />

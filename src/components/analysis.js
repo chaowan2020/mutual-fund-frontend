@@ -4,10 +4,9 @@ import { FundContext } from '../contexts/FundContext';
 
 const Analysis = () => {
     const { overview } = useContext(FundContext);
-
     let data;
     try {
-        data = JSON.parse(overview);
+        data = overview;
     } catch (error) {
         console.error('Failed to parse overview:', error);
         data = null;
@@ -46,8 +45,8 @@ const Analysis = () => {
             { label: "Return on Equity", value: data.ReturnOnEquityTTM, type: 'positive' },
         ],
         overview: [
-            { label: "Description", value: data.Description },
             { label: "Country", value: data.Country },
+            { label: "Sector", value: data.Sector },
             { label: "Fiscal Year End", value: data.FiscalYearEnd },
             { label: "Industry", value: data.Industry },
             { label: "Market Capitalization", value: data.MarketCapitalization },
@@ -69,16 +68,20 @@ const Analysis = () => {
     };
 
     const CompanyOverview = () => (
-        <Grid container spacing={3}>
+        <Grid container spacing={1}>
             <Grid item xs={12}>
-                <Card sx={{ margin: 2 }}>
+                <Card sx={{ margin: 0.5 }}>
                     <CardContent>
                         <Typography variant="h6" sx={{ marginBottom: 2 }}>
                             Overview
                         </Typography>
                         <Grid container spacing={2}>
+                        <Grid item xs={12} sm={12}>
+                        <Typography sx={{ color: 'primary.main', fontWeight: 'bold' }}>Description:</Typography>
+                        <Typography sx={{ color: 'black' }}>{data.Description}</Typography>
+                        </Grid>
                             {analysis.overview.map((item, index) => (
-                                <Grid item xs={6} sm={4} key={index}>
+                                <Grid item xs={6} sm={3} key={index}>
                                     <Typography sx={{ color: 'primary.main', fontWeight: 'bold' }}>{item.label}:</Typography>
                                     <Typography sx={{ color: 'black' }}>{item.value}</Typography>
                                 </Grid>
@@ -88,7 +91,7 @@ const Analysis = () => {
                 </Card>
             </Grid>
             <Grid item xs={12}>
-                <Card sx={{ margin: 2 }}>
+                <Card sx={{ margin: 0.5 }}>
                     <CardContent>
                         <Typography variant="h6" sx={{ marginBottom: 2 }}>
                             Historical Performance
@@ -105,7 +108,7 @@ const Analysis = () => {
                 </Card>
             </Grid>
             <Grid item xs={12}>
-                <Card sx={{ margin: 2 }}>
+                <Card sx={{ margin: 0.5 }}>
                     <CardContent>
                         <Typography variant="h6" sx={{ marginBottom: 2 }}>
                             Risk Analysis
@@ -122,7 +125,7 @@ const Analysis = () => {
                 </Card>
             </Grid>
             <Grid item xs={12}>
-                <Card sx={{ margin: 2 }}>
+                <Card sx={{ margin: 0.5 }}>
                     <CardContent>
                         <Typography variant="h6" sx={{ marginBottom: 2 }}>
                             Comparison

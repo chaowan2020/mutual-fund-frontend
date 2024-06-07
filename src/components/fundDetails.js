@@ -15,6 +15,9 @@ const FundDetail = () => {
   const candlestickSeriesRef = useRef();
   const histogramSeriesRef = useRef();
   const areaSeriesRef = useRef();
+  const candlestickChartRef = useRef();
+  const histogramChartRef = useRef();
+  const areaChartRef = useRef();
 
   useEffect(() => {
     if (fundDetail && fundDetail.length) {
@@ -29,24 +32,56 @@ const FundDetail = () => {
       }));
 
       if (!candlestickSeriesRef.current) {
-        const candlestickChart = createChart(candlestickChartContainerRef.current, { width: candlestickChartContainerRef.current.clientWidth, height: 430 });
-        candlestickSeriesRef.current = candlestickChart.addCandlestickSeries();
+        candlestickChartRef.current = createChart(candlestickChartContainerRef.current, { width: candlestickChartContainerRef.current.clientWidth, height: 430 });
+        candlestickSeriesRef.current = candlestickChartRef.current.addCandlestickSeries();
       }
       candlestickSeriesRef.current.setData(data.map(({ time, open, high, low, close }) => ({ time, open, high, low, close })));
 
       if (!histogramSeriesRef.current) {
-        const histogramChart = createChart(histogramContainerRef.current, { width: histogramContainerRef.current.clientWidth, height: 220 });
-        histogramSeriesRef.current = histogramChart.addHistogramSeries();
+        histogramChartRef.current = createChart(histogramContainerRef.current, { width: histogramContainerRef.current.clientWidth, height: 220 });
+        histogramSeriesRef.current = histogramChartRef.current.addHistogramSeries();
       }
       histogramSeriesRef.current.setData(data.map(({ time, value }) => ({ time, value })));
 
       if (!areaSeriesRef.current) {
-        const areaChart = createChart(areaChartContainerRef.current, { width: areaChartContainerRef.current.clientWidth, height: 220 });
-        areaSeriesRef.current = areaChart.addAreaSeries();
+        areaChartRef.current = createChart(areaChartContainerRef.current, { width: areaChartContainerRef.current.clientWidth, height: 220 });
+        areaSeriesRef.current = areaChartRef.current.addAreaSeries();
       }
       areaSeriesRef.current.setData(data.map(({ time, value }) => ({ time, value })));
     }
+
+    return () => {
+      if (candlestickChartRef.current) {
+        candlestickChartRef.current.remove();
+        candlestickChartRef.current = null;
+        candlestickSeriesRef.current = null;
+      }
+      if (histogramChartRef.current) {
+        histogramChartRef.current.remove();
+        histogramChartRef.current = null;
+        histogramSeriesRef.current = null;
+      }
+      if (areaChartRef.current) {
+        areaChartRef.current.remove();
+        areaChartRef.current = null;
+        areaSeriesRef.current = null;
+      }
+    };
   }, [fundDetail]);
+
+  useEffect(() => {
+    if (tabIndex === 0) {
+      if (candlestickChartRef.current) {
+        candlestickChartRef.current.resize(candlestickChartContainerRef.current.clientWidth, 430);
+      }
+      if (histogramChartRef.current) {
+        histogramChartRef.current.resize(histogramContainerRef.current.clientWidth, 220);
+      }
+      if (areaChartRef.current) {
+        areaChartRef.current.resize(areaChartContainerRef.current.clientWidth, 220);
+      }
+    }
+  }, [tabIndex]);
 
   useEffect(() => {
     if (tabIndex === 1 && !overview) {
